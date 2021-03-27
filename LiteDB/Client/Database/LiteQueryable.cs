@@ -188,6 +188,13 @@ namespace LiteDB
             return new LiteQueryable<K>(_engine, _mapper, _collection, _query);
         }
 
+        public ILiteQueryableResult<BsonDocument> SelectMany(BsonExpression selector)
+        {
+            _query.Select = selector;
+            
+            return new LiteQueryable<BsonDocument>(_engine, _mapper, _collection, _query);
+        }
+
         #endregion
 
         #region Offset/Limit/ForUpdate

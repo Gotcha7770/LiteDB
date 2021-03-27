@@ -26,6 +26,7 @@ namespace LiteDB
 
         ILiteQueryableResult<BsonDocument> Select(BsonExpression selector);
         ILiteQueryableResult<K> Select<K>(Expression<Func<T, K>> selector);
+        ILiteQueryableResult<BsonDocument> SelectMany(BsonExpression selector);
     }
 
     public interface ILiteQueryableResult<T>

@@ -68,6 +68,10 @@ namespace LiteDB.Engine
             {
                 return this.SelectAll(source, query.Select.Expression);
             }
+            if (query.Select.Many)
+            {
+                return this.SelectMany(source, query.Select.Expression);
+            }
             // run select transform in each document and return a new document or value
             else
             {
@@ -93,6 +97,27 @@ namespace LiteDB.Engine
                 else
                 {
                     yield return new BsonDocument { [defaultName] = value };
+                }
+            }
+        }
+
+        private IEnumerable<BsonDocument> SelectMany(IEnumerable<BsonDocument> source, BsonExpression select)
+        {
+            var defaultName = select.DefaultFieldName();
+            
+            foreach (var doc in source)
+            {
+                var values = select.Execute(doc, _pragmas.Collation);
+                foreach (var value in values)
+                {
+                    if (value.IsDocument)
+                    {
+                        yield return value.AsDocument;
+                    }
+                    else
+                    {
+                        yield return new BsonDocument { [defaultName] = value };
+                    }
                 }
             }
         }
