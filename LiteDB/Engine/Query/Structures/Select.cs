@@ -15,10 +15,12 @@ namespace LiteDB.Engine
         public BsonExpression Expression { get; }
 
         public bool All { get; }
+        public bool Many { get; }
 
         public Select(BsonExpression expression, bool all)
         {
             this.Expression = expression;
+            this.Many = !expression.IsScalar;
             this.All = all;
         }
     }
